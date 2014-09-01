@@ -33,11 +33,12 @@ void main()
     }
     else if (satellite_mode == PAYLOAD_MODE)
     {
-  
+        DetermineAttitude();
+        
     } 
     else if (satellite_mode == DATA_TRANSMIT_MODE)
     {
-        transmit_data()
+        transmit_data();
   
     }
     else if (satellite_mode == CHECKOUT_MODE)
@@ -57,12 +58,25 @@ void DeterminePosition(){}
 //Magnetorquers
 void ApplyControl(){}
 
+//Other Sensors (temp, current, voltage, power consumption etc)
+void ReadSensors(){}
+
 //Payload - Interrupts triggered when lightning detected. Can trigger interrupt if pin receives a pulse (ie goes from low to high).
-attachInterrupt(pin, ISR, mode)
+// Use fn below to generate interrupt on arduino
+//attachInterrupt(pin, ISR, mode)
+
 //start counting gamma rays when the lightning is detected.
 void GeigerCount(){}
 
 //Communications
-void transmit_30s_ping(){} //Create timer interrupt every 30s??
-void transmit_data(){}
+//send ping with time, position and radio call sign every 30s
+void transmit_30s_ping()
+{
+    DeterminePosition();
+} //Create timer interrupt every 30s??
+
+void transmit_data(){
+    DetermineAttitude()
+    
+}
 void receive(){}

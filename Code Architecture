@@ -15,39 +15,39 @@ int satellite_mode;
 
 void main()
 {
-  if (satellite_mode == NORMAL_MODE)
-  {
+    if (satellite_mode == NORMAL_MODE)
+    {
   
-  }
-  else if (satellite_mode == SAFE_MODE)
-  {
+    }
+    else if (satellite_mode == SAFE_MODE)
+    {
   
-  }
-  else if (satellite_mode == RECOVERY_MODE)
-  {
+    }
+    else if (satellite_mode == RECOVERY_MODE)
+    {
   
-  }
-  else if (satellite_mode == TECHNOLOGY_DEMO_MODE)
-  {
+    }
+    else if (satellite_mode == TECHNOLOGY_DEMO_MODE)
+    {
   
-  }
-  else if (satellite_mode == PAYLOAD_MODE)
-  {
+    }
+    else if (satellite_mode == PAYLOAD_MODE)
+    {
   
-  } 
-  else if (satellite_mode == DATA_TRANSMIT_MODE)
-  {
-  transmit_data()
+    } 
+    else if (satellite_mode == DATA_TRANSMIT_MODE)
+    {
+        transmit_data()
   
-  }
-    else if (satellite_mode == CHECKOUTMODE)
-  {
-  
-  }
+    }
+    else if (satellite_mode == CHECKOUT_MODE)
+    {
+        
+    } 
 }
 
 
-//FUNCTIONS
+//FUNCTION DESCRIPTION
 //ADCS
 //Sensors - IMU, Sun sensors (compl. filter)
 //Acquire data from sensors and fuse using complementary filter. Return data into Roll, Pitch and Yaw  variables.
@@ -59,6 +59,8 @@ ApplyControl()
 
 //Payload - Interrupts triggered when lightning detected. Can trigger interrupt if pin receives a pulse (ie goes from low to high).
 attachInterrupt(pin, ISR, mode)
+//start counting gamma rays when the lightning is detected.
+GeigerCount()
 
 //Communications
 transmit_30s_ping() //Create timer interrupt every 30s??

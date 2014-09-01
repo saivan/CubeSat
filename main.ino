@@ -1,10 +1,5 @@
 //Code Architecture - will contain modes of operation, main functions and the pin I/O setup routine
 
-//Setup pin I/O for Due
-void setup() {
-  // put your setup code here, to run once:
-
-}
 
 //Modes of operation 
 #define NORMAL_MODE 0
@@ -14,6 +9,13 @@ void setup() {
 #define PAYLOAD_MODE  4
 #define DATA_TRANSMIT_MODE  5
 #define CHECKOUT_MODE 6
+
+//Setup pin I/O for Due
+void setup() {
+  // put your setup code here, to run once:
+
+}
+
 
 int satellite_mode;
 

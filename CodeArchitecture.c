@@ -51,18 +51,18 @@ void main()
 //ADCS
 //Sensors - IMU, Sun sensors (compl. filter)
 //Acquire data from sensors and fuse using complementary filter. Return data into Roll, Pitch and Yaw  variables.
-DetermineAttitude()
+void DetermineAttitude(){}
 //GPS
-DeterminePosition()
+void DeterminePosition(){}
 //Magnetorquers
-ApplyControl()
+void ApplyControl(){}
 
 //Payload - Interrupts triggered when lightning detected. Can trigger interrupt if pin receives a pulse (ie goes from low to high).
 attachInterrupt(pin, ISR, mode)
 //start counting gamma rays when the lightning is detected.
-GeigerCount()
+void GeigerCount(){}
 
 //Communications
-transmit_30s_ping() //Create timer interrupt every 30s??
-transmit_data()
-receive()
+void transmit_30s_ping(){} //Create timer interrupt every 30s??
+void transmit_data(){}
+void receive(){}

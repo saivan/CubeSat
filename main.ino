@@ -2,25 +2,72 @@
 
 
 //Modes of operation 
-#define NORMAL_MODE 0
-#define SAFE_MODE 1
-#define RECOVERY_MODE 2
-#define TECHNOLOGY_DEMO_MODE  3
-#define PAYLOAD_MODE  4
-#define DATA_TRANSMIT_MODE  5
-#define CHECKOUT_MODE 6
+enum Modes {
+  NORMAL,
+  SAFE,
+  RECOVERY,
+  PAYLOAD,
+  DATA_TRANSMIT,
+  TECHNOLOGY_DEMO,
+  CHECKOUT
+};
+int gammaSatMode;
 
 //Setup pin I/O for Due
 void setup() {
   // put your setup code here, to run once:
-
-}
-
-
-int satellite_mode;
+  gammaSat.changeMode(RECOVERY);      // recovery mode - sets up all critical subsystems
+  gammaSat.changeMode(CHECKOUT);      // checkout mode - diagnostic check of all subsystems; setup of all remaining subsystems
+} 
 
 void main()
 {
+    gammaSatMode = TTC.getMode(); // the mode is changed by a command from the groundstation    
+    if(!gammaSat.changeMode(gammaSatMode))
+      gammaSat.changeMode(SAFE);  // going into safe mode if error has occurred
+}
+
+// changes the operational mode of the satellite
+// returns 0 if change successful, -1 otherwise
+// we will define this as a method of the Satellite class at some point
+int changeMode(int mode)
+{  switch(mode)
+  {
+    case NORMAL:
+    {
+      normal_mode();
+      return 0;   
+    }
+    case RECOVERY:
+    {
+      recovery_mode();
+      return 0;   
+    }   
+    case SAFE:
+    {
+      safe_mode();
+      return 0;
+    }
+    case PAYLOAD:
+    {
+      science_mode();
+      return 0;
+    }
+    case DATA_TRANSMIT:
+    {
+      transmission_mode();
+      return 0;
+    }
+    case TECHNOLOGY_DEMO:
+    {
+      technology_mode();
+      return 0;
+    }
+    default:
+      return -1;  // error has occurred
+    
+  }
+      /* REPLACE WITH SWITCH STATEMENT
     if (satellite_mode == NORMAL_MODE)
     {
   
@@ -51,8 +98,8 @@ void main()
     {
         
     } 
+    */
 }
-
 
 //FUNCTION DESCRIPTIONS
 //ADCS

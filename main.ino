@@ -20,8 +20,8 @@ void setup() {
   gammaSat.changeMode(CHECKOUT);      // checkout mode - diagnostic check of all subsystems; setup of all remaining subsystems
 } 
 
-void main()
-{
+
+void loop(){
     gammaSatMode = TTC.getMode(); // the mode is changed by a command from the groundstation    
     if(!gammaSat.changeMode(gammaSatMode))
       gammaSat.changeMode(SAFE);  // going into safe mode if error has occurred
@@ -30,75 +30,32 @@ void main()
 // changes the operational mode of the satellite
 // returns 0 if change successful, -1 otherwise
 // we will define this as a method of the Satellite class at some point
-int changeMode(int mode)
-{  switch(mode)
-  {
+
+// Once the mode has been changed, it will immediately begin to run in a loop
+// Calling itself upon exiting.
+int changeMode(int mode){  
+  switch(mode){
     case NORMAL:
-    {
-      normal_mode();
+      gammaSat.normalMode();
       return 0;   
-    }
     case RECOVERY:
-    {
-      recovery_mode();
+      gammaSat.recoveryMode();
       return 0;   
-    }   
     case SAFE:
-    {
-      safe_mode();
+      gammaSat.safeMode();
       return 0;
-    }
     case PAYLOAD:
-    {
-      science_mode();
+      gammaSat.scienceMode();
       return 0;
-    }
     case DATA_TRANSMIT:
-    {
-      transmission_mode();
+      gammaSat.transmissionMode();
       return 0;
-    }
     case TECHNOLOGY_DEMO:
-    {
-      technology_mode();
+      gammaSat.technologyMode();
       return 0;
-    }
     default:
       return -1;  // error has occurred
-    
   }
-      /* REPLACE WITH SWITCH STATEMENT
-    if (satellite_mode == NORMAL_MODE)
-    {
-  
-    }
-    else if (satellite_mode == SAFE_MODE)
-    {
-  
-    }
-    else if (satellite_mode == RECOVERY_MODE)
-    {
-  
-    }
-    else if (satellite_mode == TECHNOLOGY_DEMO_MODE)
-    {
-  
-    }
-    else if (satellite_mode == PAYLOAD_MODE)
-    {
-        DetermineAttitude();
-        
-    } 
-    else if (satellite_mode == DATA_TRANSMIT_MODE)
-    {
-        transmit_data();
-  
-    }
-    else if (satellite_mode == CHECKOUT_MODE)
-    {
-        
-    } 
-    */
 }
 
 //FUNCTION DESCRIPTIONS

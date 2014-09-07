@@ -1,14 +1,21 @@
 
 
 // The satellite class houses the other components
-class Sattelite{
-
+class gammaSat{
   private:
     ADCSUnit    attitudeUnit();
     COMSystem   communications();
     // other systems should be their own class
   public:
-    // User accessable sattelite methods
+    int changeMode(int mode);
+    int normalMode();
+    int recoveryMode();
+    int safeMode();
+    int scienceMode();
+    int transmissionMode();
+    int technologyMode();
+
+    // User accessable satellite methods
 }
 
 
@@ -29,10 +36,18 @@ class ADCSUnit{
 class COMSystem{
   public:
     void sendMessage( string str );
-    void beakonSignal();
+    void beaconSignal();
+    char getMode(); //Receive command from ground station about desired mode.
   private:
-    
 
+}
+
+//Declaring payload system
+class Payload{
+  public: 
+    int senseGamma();
+  private:
+  
 }
 
 // Declare other systems below

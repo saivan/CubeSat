@@ -7,6 +7,8 @@ class gammaSat{
     COMSystem   communications();
     // other systems should be their own class
   public:
+    vector3D satAttitude;
+    vector3D satPosition;
     int changeMode(int mode);
     int normalMode();
     int recoveryMode();

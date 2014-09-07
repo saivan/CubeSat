@@ -15,10 +15,10 @@ int gammaSat::essentialFunctions()
 //Normal Mode
 //All subsystems operational except for payload
 //Activated after the inital recovery and detumble phases
+//Wait for command from ground station
 int gammaSat::normalMode()
 {
-  essentialFunctions();
-  
+  gammaSat.essentialFunctions();
   
 }
 
@@ -27,7 +27,7 @@ int gammaSat::normalMode()
 //Comunication with ground station initialised
 int gammaSat::recoveryMode()
 {
-    essentialFunctions();
+    gammaSat.essentialFunctions();
 
 }
 
@@ -35,7 +35,7 @@ int gammaSat::recoveryMode()
 //Beacon transmit, receive commmands, GPS and attitude control
 int gammaSat::safeMode()
 {
-    essentialFunctions();
+  gammaSat.essentialFunctions();
 
 }
 
@@ -44,8 +44,8 @@ int gammaSat::safeMode()
 //Science payload ON
 int gammaSat::scienceMode()
 {
-    essentialFunctions();
-
+  gammaSat.essentialFunctions();
+  Payload.senseGamma();
 }
 
 //Transmit Mode
@@ -53,8 +53,8 @@ int gammaSat::scienceMode()
 //Transmit all data to ground station, when gammaSat is in view of the ground station
 int gammaSat::transmissionMode()
 {
-    essentialFunctions();
-
+  gammaSat.essentialFunctions();
+  COMSystem.sendData();
 }
 
 //Technology Mode
@@ -62,8 +62,8 @@ int gammaSat::transmissionMode()
 //Technology payload ON
 int gammaSat::technologyMode()
 {
-    essentialFunctions();
-
+  gammaSat.essentialFunctions();
+  gammaSat.techPayload();
 }
 
 //Checkout Mode
@@ -71,6 +71,6 @@ int gammaSat::technologyMode()
 //Diagnostic of all satellite components
 int gammaSat::technologyMode()
 {
-    essentialFunctions();
-
+  gammaSat.essentialFunctions();
+  Status = gammaSat.diagnostic();
 }

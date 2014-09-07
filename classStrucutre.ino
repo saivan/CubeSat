@@ -18,7 +18,7 @@ class gammaSat{
     int technologyMode();
     
     int essentialFunctions(); //essential fns including Beacon transmit, receive commmands, GPS and attitude control. Always ON regardless of which mode
-    
+    int techPayload(); //Operate tech payload
     // User accessable satellite methods
 }
 

@@ -39,7 +39,7 @@ class ADCSUnit{
 // Declaring the communication system
 class COMSystem{
   public:
-    void sendMessage( string str );
+    void sendData( string str );
     void beaconSignal();
     char getMode(); //Receive command from ground station about desired mode.
   private:

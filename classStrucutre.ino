@@ -7,8 +7,10 @@ class gammaSat{
     COMSystem   communications();
     // other systems should be their own class
   public:
+    int Status;
     vector3D satAttitude;
     vector3D satPosition;
+    
     int changeMode(int mode);
     int normalMode();
     int recoveryMode();
@@ -19,6 +21,9 @@ class gammaSat{
     
     int essentialFunctions(); //essential fns including Beacon transmit, receive commmands, GPS and attitude control. Always ON regardless of which mode
     int techPayload(); //Operate tech payload
+    
+    int diagnoseStatus(); //diagnostic of all satellite components
+    
     // User accessable satellite methods
 }
 

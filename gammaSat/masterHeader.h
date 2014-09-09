@@ -7,15 +7,16 @@
 typedef enum { X_COM, Y_COM, Z_COM } component;
 
  // We have mode codes to define the mode we are working with
-enum SATELLITE_MODE {                          
+typedef enum {                          
         NORMAL,  SAFE,  RECOVERY,  TECHNOLOGY_DEMO,  PAYLOAD,  DATA_TRANSMIT,  CHECKOUT
-};
+} satMode ;
 
 // This defines the 3D vector class 
 class vector3D{
   public:
+    void setComponent( component inputComponent, double value );
     void setVector( double x, double y, double z );
-    void getComponent ( component request );    
+    double getComponent ( component request );    
   private:
     double x;
     double y;
@@ -44,7 +45,7 @@ class COMSystem{
   public:
     void sendData( char str );
     void beaconSignal();
-    char getMode(); //Receive command from ground station about desired mode.
+    satMode getMode(); //Receive command from ground station about desired mode.
   private:
 
 };
@@ -62,9 +63,10 @@ class Payload{
 class satellite{
   public:    
     satellite();                                    // The constructor for the satellite
-    bool setMode( int modeCode = NORMAL );          // Returns true if the mode was successfully set (defaults to normal)
+    void setMode( satMode modeCode = NORMAL );          // Returns true if the mode was successfully set (defaults to normal)
     bool sendBeacon();                              // Sends out the beacon, called periodically
   private:
+    satMode satelliteMode = NORMAL;
   protected:  
     GPSUnit *positioningSystem;                                 // We point to the gps class and call its methods by gpsSystem->method()
     ADCSUnit *attitudeSystem;                                // We also point to an ADCS
@@ -72,8 +74,6 @@ class satellite{
     Payload *payload;                               
     
 };
-
-
 
 #endif
 

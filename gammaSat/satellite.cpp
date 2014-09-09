@@ -13,3 +13,11 @@ satellite::satellite() :
 {}
 
 
+void satellite::setMode( satMode modeCode ) :
+	satelliteMode(modeCode)
+{}
+
+
+
+
+

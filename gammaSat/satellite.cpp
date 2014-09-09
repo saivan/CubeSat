@@ -13,9 +13,9 @@ satellite::satellite() :
 {}
 
 
-void satellite::setMode( satMode modeCode ) :
-	satelliteMode(modeCode)
-{}
+void satellite::setMode( satMode modeCode ) {
+	satelliteMode = modeCode;
+}
 
 
 

@@ -2,7 +2,7 @@
 #include "masterHeader.h"
 
 // Used to send a character out through the serial module
-void COMSystem::sendData( string str ){
+void COMSystem::sendData( char *str ){
 
 }
 

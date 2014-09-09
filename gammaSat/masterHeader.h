@@ -43,7 +43,7 @@ class ADCSUnit{
 // This defines the communication System
 class COMSystem{
   public:
-    void sendData( char str );
+    void sendData( char *str );
     void beaconSignal();
     satMode getMode(); //Receive command from ground station about desired mode.
   private:
@@ -62,11 +62,11 @@ class Payload{
 // This is the defintion of our satellite class
 class satellite{
   public:    
-    satellite();                                    // The constructor for the satellite
-    void setMode( satMode modeCode = NORMAL );          // Returns true if the mode was successfully set (defaults to normal)
-    bool sendBeacon();                              // Sends out the beacon, called periodically
+    satellite();                                                // The constructor for the satellite
+    void setMode( satMode modeCode = NORMAL );                  // Returns true if the mode was successfully set (defaults to normal)
+    bool sendBeacon();                                          // Sends out the beacon, called periodically
   private:
-    satMode satelliteMode = NORMAL;
+    satMode satelliteMode;
   protected:  
     GPSUnit *positioningSystem;                                 // We point to the gps class and call its methods by gpsSystem->method()
     ADCSUnit *attitudeSystem;                                // We also point to an ADCS

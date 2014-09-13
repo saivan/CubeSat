@@ -3,6 +3,8 @@
   This code demonstrates the use of the GRS class and transmits
   both the raw AD conversion result and a calculated voltage 
   over the serial at 9600 Baud.
+  Author: Anna Zovaro
+  Date: 13th of September, 2014
 */
 
 #include <stdlib.h>

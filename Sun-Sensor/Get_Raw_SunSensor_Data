@@ -1,0 +1,27 @@
+/*
+  This is an example code which obtains RAW data from the Arduino's ADC.
+*/
+
+#include "SunSensor.h"
+#include "Arduino.h"
+
+#define NUM_SUN_SENSORS 10  // number of sun sensors
+#define S1 0
+#define S2 1
+#define S3 2
+#define S4 3
+#define E 4
+
+int data[NUM_SUN_SENSORS];  // array to store sun sensor conversion data
+int pinout[] = {S1, S2, S3, S4, E, A0}; 
+
+void setup(void)
+{
+  setupSS(pinout);  // setup the sun sensors
+}
+
+
+void loop(void)
+{  
+  getSSData(pinout, NUM_SUN_SENSORS, data);
+}

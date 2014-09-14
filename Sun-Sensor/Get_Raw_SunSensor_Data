@@ -1,27 +1,37 @@
 /*
-  This is an example code which obtains RAW data from the Arduino's ADC.
+  This function is used to obtain data from the Sun Sensors.
+  Inputs: Pins S1:S4 (select pins); #E (enable pin); Analog output (A0)
+  Outputs: array of ints
 */
 
 #include "SunSensor.h"
 #include "Arduino.h"
 
 #define NUM_SUN_SENSORS 10  // number of sun sensors
-#define S1 0
-#define S2 1
-#define S3 2
-#define S4 3
-#define E 4
+#define S1 2
+#define S2 3
+#define S3 4
+#define S4 5
+#define E 6
 
 int data[NUM_SUN_SENSORS];  // array to store sun sensor conversion data
 int pinout[] = {S1, S2, S3, S4, E, A0}; 
 
+SunSensor ss(pinout, NUM_SUN_SENSORS);
+
 void setup(void)
 {
-  setupSS(pinout);  // setup the sun sensors
+  Serial.begin(9600);
+  for (int i = 0; i < NUM_SUN_SENSORS; i++)
+  {
+    data[i] = 0;
+  }
 }
 
 
 void loop(void)
 {  
-  getSSData(pinout, NUM_SUN_SENSORS, data);
+  ss.getSSData(data);
+  Serial.println(data[0]);
+  delay(100);
 }

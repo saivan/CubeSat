@@ -9,8 +9,22 @@
 
 #include "Arduino.h"
 
-void setupSS(int * pinout);
-void getSSData(int * pinout, int nSensors, int * data);
-int * muxSelect(int num);
+class SunSensor
+{
+  public:
+    SunSensor(int * pinout, int nSensors);  // Initialises an instance of a SunSensor object.
+                                            // pinout - integer array of pin assignments of the form [S1, S2, S3, S4, EN, AnalogIn]
+                                            // nSensors - number of sensors (<16)
+    void getSSData(int * data);   // Stores raw integer output of the AD conversion taken from each sun sensor in the array data.
+    
+  private:
+    int _nSensors;
+    int S1;
+    int S2;
+    int S3;
+    int S4;
+    int enable;
+    int analogPin;
+};
 
 #endif

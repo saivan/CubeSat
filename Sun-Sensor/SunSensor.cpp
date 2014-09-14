@@ -5,63 +5,49 @@
 */
 
 #include "Arduino.h"
+#include "SunSensor.h"
 
-/*
-  setupSS() - configures the Arduino to obtain input from the sun sensors via an analog 4-bit multiplexer.
-  inputs: pinout - integer array of pin assignments of the form [S1, S2, S3, S4, EN, AnalogIn]
+/* 
+    Initialises an instance of a SunSensor object
+    inputs:  pinout - integer array of pin assignments of the form [S1, S2, S3, S4, EN, AnalogIn]
+            nSensors - number of sensors (<16)
 */
-void setupSS(int * pinout)
+SunSensor::SunSensor(int * pinout, int nSensors)
 {
-  for (int i = 0; i < 4; i++)
+  _nSensors = nSensors;
+  
+  S1 = pinout[0];          // select pins
+  S2 = pinout[1];
+  S3 = pinout[2];
+  S4 = pinout[3];          
+  enable = pinout[4];      // enable pin
+  analogPin = pinout[5];   // input pin 
+  
+  for (int i = 0; i < 5; i++)
   {
     pinMode(pinout[i], OUTPUT);  // setting S1:S4 and E as output
   }
-}
 
-
-/*
-    muxSelector() - an easy way to convert a number into the correct combination
-    of 1's and 0's for the multiplexer select inputs.
-    output: arr - binary array
-*/
-int * muxSelect(int num)
-{
-    int arr[4];
-    arr[0] = bitRead(num, 0);
-    arr[1] = bitRead(num, 1);
-    arr[2] = bitRead(num, 2);
-    arr[3] = bitRead(num, 3);
-    return arr;
 }
 
 /*
   getSSData() - Stores raw integer output of the AD conversion taken from each sun sensor in the array data.
-  inputs: pinout - integer array of pin assignments of the form [S1, S2, S3, S4, EN, AnalogIn]
-          nSensors - number of sensors
-          data - integer array of size nSensors to store data in
+  inputs: data - integer array of size nSensors to store data in
  */ 
-void getSSData(int * pinout, int nSensors, int * data)
+void SunSensor::getSSData(int * data)
 {
-   int S1 = pinout[0];          // select pins
-   int S2 = pinout[1];
-   int S3 = pinout[2];
-   int S4 = pinout[3];          
-   int enable = pinout[4];      // enable pin
-   int analogPin = pinout[5];   // input pin
-   
    digitalWrite(enable, LOW);   // clearing enable pin to enable the MUX
    
-   for (int i = 0; i < nSensors; i++)  // looping through each multiplexer input
+   for (int i = 0; i < _nSensors; i++)  // looping through each multiplexer input
    {
-     int * selectArr = muxSelect(i);   // configuring S1:S4 to select the right input
-     digitalWrite(S1, selectArr[0]);
-     digitalWrite(S2, selectArr[1]);
-     digitalWrite(S3, selectArr[2]);
-     digitalWrite(S4, selectArr[3]);
+     digitalWrite(S1, bitRead(i, 0));  // configuring the selec pins
+     digitalWrite(S2, bitRead(i, 1));
+     digitalWrite(S3, bitRead(i, 2));
+     digitalWrite(S4, bitRead(i, 3));
      data[i] = analogRead(analogPin);  // reading data from the sun sensor
    }
    
    digitalWrite(enable, HIGH);   // setting enable pin to enable the MUX
-
    return;
 }
+

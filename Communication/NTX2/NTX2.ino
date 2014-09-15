@@ -2,10 +2,7 @@
  
     Transmits data via RTTY with a checksum.
  
-    Created 2012 by M0UPU as part of a UKHAS Guide on linking NTX2 Modules to Arduino.
-    RTTY code from Rob Harrison Icarus Project. 
-    http://ukhas.org.uk
-*/ 
+*/
  
 #define RADIOPIN 9
  

@@ -1,0 +1,19 @@
+/*
+This code is written for the connect between Arduinoand Raspberry Pi.
+And this part is on the Arduino end.
+*/
+
+void setup()
+{
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  if (Serial.available()>0)
+  {
+    int incoming = Serial.read();
+    Serial.print("character received: ");
+    Serial.print(incoming,DEC);
+  }
+}

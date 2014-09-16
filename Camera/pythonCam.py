@@ -7,5 +7,12 @@ camera = picamera.PiCamera()
 # only uncomment this line if you want to see the output
 # camera.start_preview()
 
+# Changing camera settings, don't uncomment things that
+# you don't intend on changing, GAWSH!
+camera.brightness = 90
+camera.sharpness = 10
+camera.ISO = 30
+
 # This takes a photo - Try to keep it appropriate
-camera.capture('helloWorld.jpg')
+fileName = raw_input( "So what shall I call the file: " )
+camera.capture( fileName )

@@ -1,0 +1,7 @@
+If you can read this, you're seeing the first message from an
+untethered Raspberry pi... Thats right...
+This PI is running without any external power supply
+it's currently running off of a lithium battery, and my
+little prototyped power supply...
+
+

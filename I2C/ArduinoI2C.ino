@@ -6,7 +6,7 @@
 int number = 0;
 int state = 0;
 int i=0;
-char string[]="hello"; //initialise string to send
+char string[]="hello,e,gesgjesesgseg,e,sg,es,g"; //initialise string to send
 
 void setup() {
     Serial.begin(9600);         // start serial for output

@@ -1,0 +1,59 @@
+//define sunsensors
+float sunSensor0;
+float sunSensor1;
+float sunSensor2;
+float sunSensor3;
+float sunsensor4;
+float sunsensor5;
+float sunsensor6;
+float sunSensor7;
+
+//numofsunsensors array get the number of the sunsensors
+//sunsensors array contains all the sunsensors
+float sunSensors[8]={sunSensor0, sunSensor1, sunSensor2, sunSensor3, sunSensor4, sunSensor5, sunSensor6, sunSensor7};
+int numOfSunSensors[8]={0,1,2,3,4,5,6,7}
+
+void setup()
+{
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  int i;
+  int j;
+  //define the middle value to store the change
+  float sunSensorsI=0;
+  int numSunSensors=0; 
+  
+  sunSensors0=analogRead(A0);
+  sunSensors1=analogRead(A1);
+  sunSensors2=analogRead(A2);
+  sunSensors3=analogRead(A3);
+  sunSensors4=analogRead(A4);
+  sunSensors5=analogRead(A5);
+  sunSensors6=analogRead(A6);
+  sunSensors7=analogRead(A7);
+  Serial.println(sunSensors[]);
+  
+  //make the sunsensors list from big to small
+  for(int j, j<=7, j==)
+  {
+    for (int i=0, i<=7-j, i++)
+    {
+      if(sunSensors[i]<sunSensors[i+1])
+      {
+        sunSensors[i]=middleValue;
+        sunsensors[i]=sunSensors[i+1];
+        sunsensors[i+1]=middleValue;
+        
+        numSunSensors[i]=numSunSensorsI;
+        numSunSensors[i]=numSunSensors[i+1];
+        numSunSensors[i+1]=numSunSensorsI;       
+      }
+    }
+  }
+  Serial.println(sunSensors[i]);
+  Serial.println(numSunSensors[i]);
+  Serial.println(numSunSensors[i]/2);  
+}

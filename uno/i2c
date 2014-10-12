@@ -1,0 +1,77 @@
+//slave sender uno
+
+#include <Wire.h>
+
+void setup()
+{
+  Wire.begin(2);                // join i2c bus with address #2
+  Wire.onRequest(requestEvent); // register event
+  pinMode(13,OUTPUT);
+ int data[2];
+}
+
+void loop()
+{
+  delay(1000);
+  data=sunsensors();
+  string ="1,26,38,28";
+}
+
+// function that executes whenever data is requested by master
+// this function is registered as an event, see setup()
+void requestEvent()
+{
+  Wire.write(string[i]); // respond with message of 6 bytes
+  i++;                     // as expected by master
+}
+
+int* sunsensors() 
+{
+  int angle[2];
+  double theta0 = 60 * PI / 180;
+  double V0 = 4.99;
+  double C = 2 * V0 * sin(theta0);
+  
+  // read the input on analog pin 0:
+  int sensorValue1 = analogRead(A0);
+  int sensorValue2 = analogRead(A1);
+  int sensorValue3 = analogRead(A2);
+  int sensorValue4 = analogRead(A3);
+
+  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+  double voltage1 = sensorValue1 * (5.0 / 1023.0);
+  double voltage2 = sensorValue2 * (5.0 / 1023.0);
+  double voltage3 = sensorValue3 * (5.0 / 1023.0);
+  double voltage4 = sensorValue4 * (5.0 / 1023.0);
+  double angle1 = asin((voltage1 - voltage2) / C) * 180 / PI;
+  double angle2 = asin((voltage3 - voltage4) / C) * 180 / PI;
+  
+  // Sun location is with respect to face 1.
+  double n1 = 1;
+  double yaw = (tan(angle1) / tan(angle2)) * 180 / PI;    //n2
+  double pitch = tan(angle1) * 180 / PI;                  //t
+  
+  // print out the value you read:
+  //Serial.print("sensor1 = " );
+  //Serial.println(voltage1);
+  //Serial.print("sensor2 = " );
+  //Serial.println(voltage2);
+  //Serial.print("sensor3 = " );
+  //Serial.println(voltage3);
+  //Serial.print("sensor4 = " );
+  //Serial.println(voltage4);
+  
+  //Serial.println("angle1 = ");
+  ///Serial.println(angle1);
+  //Serial.println("angle2 = ");
+  //Serial.println(angle2);
+  
+  Serial.print("yaw = ");
+  Serial.println(yaw);
+  Serial.print("pitch = ");
+  Serial.println(pitch);
+  angle[0]=yaw;
+  angle[1]=pitch;
+  
+  return angle;
+}

@@ -6,16 +6,14 @@
 #define RECEIVEPIN 12   // pushbutton connected to digital pin 7
 
 
-int time1;
-int time2;
-int startTrans=0;
-int checksum;
-int check;
-String receiverString;
-int goodString;
-String decoded;
+//int time1;
+//int time2;
+int startTrans=0;      //global
+int checksum;    //doesn't have to be global
+String receiverString; //doesn't have to be global
+//int goodString;
+String decoded;  //command variable global
 int count;
-String command;
 
  
 

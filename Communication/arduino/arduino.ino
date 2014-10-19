@@ -34,7 +34,7 @@ void loop()
 {
   
   
-  sprintf(datastring,"~abc~"); // Puts the text in the datastring
+  sprintf(datastring,"ª¦²`bpª¦¨b<information><FCS>~");
   rtty_txstring (datastring);
   Serial.println();
   
@@ -118,11 +118,9 @@ if(((int)receiverString[i]-48)==0 && ((int)receiverString[i+9]-48)==1 && ((int)r
 void rtty_txstring (char * string)
 {
  
-  /* Simple function to sent a char at a time to 
-   	** rtty_txbyte function. 
-   	** NB Each char is one byte (8 Bits)
-   	*/
- 
+
+  noInterrupts();
+
   char c;
  
   c = *string++;
@@ -132,6 +130,9 @@ void rtty_txstring (char * string)
     rtty_txbyte (c);
     c = *string++;
   }
+
+  interrupts();
+
 }
  
  

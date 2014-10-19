@@ -1,27 +1,31 @@
-int inPin = 2;   // pushbutton connected to digital pin 7
-int outPin = 7;   // pushbutton connected to digital pin 7
-int time1;
-int time2;
-
-
-
-
-
-
-#define RADIOPIN 9
- 
 #include <string.h>
 #include <util/crc16.h>
  
-char datastring[80];
-String receiverString;
 
+#define RADIOPIN 7
+#define RECEIVEPIN 12   // pushbutton connected to digital pin 7
+
+
+int time1;
+int time2;
+int startTrans=0;
+int checksum;
+int check;
+String receiverString;
+int goodString;
+String decoded;
+int count;
+String command;
+
+ 
+
+char datastring[80];
 
 
 
 void setup()
 {
-  pinMode(inPin, INPUT);      // sets the digital pin 7 as input
+  pinMode(RECEIVERPIN, INPUT);  
   pinMode(RADIOPIN,OUTPUT);
 
     Serial.begin(9600);
@@ -31,128 +35,105 @@ void setup()
 void loop()
 {
   
-receiverString="";
   
-  //
-  // receiver loop
-  //
-  // ">>>>" used to sync timing between satellite and ground station.
-  //
+  sprintf(datastring,"~abc~"); // Puts the text in the datastring
+  rtty_txstring (datastring);
+  Serial.println();
   
-  
-  //>>>>>>time1=micros();
-  int i;
-  int val;
-
-//  for(i=0;i<80;i++){
-//  
-//  
-//    
-//  delayMicroseconds(10000); // For 50 Baud uncomment this and the line below. 
-//  delayMicroseconds(10142); // For some reason you can't do 20150 it just doesn't work.
-//  val = digitalRead(inPin);    // read the input pin
-//  
-//  receiverString[i]=val;
-//  
-//  Serial.print(val);         // print as an ASCII-encoded decimal
-//  
-//  }
-//  
-
-      sprintf(datastring,"~a~"); // Puts the text in the datastring
-      rtty_txstring (datastring);
-      rtty_txstring (datastring);
-      rtty_txstring (datastring);
-
-    Serial.println(datastring);
-
-  
-for(i=0;i<90;i++){
-
-if(((int)receiverString[i]-48)==0 && ((int)receiverString[i+8]-48)==1 && ((int)receiverString[i+9]-48)==1){
-
-
-  int oct=0;
-  int j;
- for(j=0;j<7;j++){
-    
-    oct+=(((int)receiverString[i+j]-48)*lround(pow(2,(6-j))));
-     Serial.println(((int)receiverString[i+j]-48));
-
-  }
-    // Serial.println(oct);
-
- char l=oct;
-    Serial.println("l");
-    Serial.println(" ");
-    i+=9;
-
- }
-  }
-    Serial.println(receiverString);
- 
-  delay(3000);
-  //>>>>>time2=micros();
-  //>>>>>>Serial.println(time2-time1);
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  //
-  //  Transmission loop
-  //
-  
-  
-//    sprintf(datastring,"aaaaaaaa"); // Puts the text in the datastring
-//    rtty_txstring (datastring);
-//    delay(1000);
-//    
-    
-    
-    
-    
-    
+  receiverString="1101000011011001111110110011111101101000011011001111110110011111101101000011011001111110110011111101101000011011001111110110011111101101000011011001111110110011111101101000011011001111110110011111101101000011011001111110110011111101101000011011001111110110011111101101000011011001111110110011111101101000011011001111110110011111101101000011011001111110110011111";
+  //receiverBinary();
+  decode();
 
 }
 
 
+void receiverBinary(){
 
 
+  receiverString="";
+
+  for(int i=0;i<800;i++){ 
+    //time2=micros();
+    //Serial.println(time2-time1);
+    // time1=micros();
+    delayMicroseconds(3370);
+    //delayMicroseconds(10000); // For 50 Baud uncomment this and the line below. 
+    //delayMicroseconds(10142); // For some reason you can't do 20150 it just doesn't work.  
+    val = digitalRead(RECEIVERPIN);    // read the input pin
+    receiverString[i]=val;
+    
+  }
+
+}
+
+
+void decode(){
+    for(int i=0;i<receiverString.length();i++){
+
+if(((int)receiverString[i]-48)==0 && ((int)receiverString[i+9]-48)==1 && ((int)receiverString[i+10]-48)==1){
+  int oct=0;
+  int j;
+ for(j=0;j<8;j++){
+    
+    oct+=(((int)receiverString[i+j+1]-48)*lround(pow(2,(j))));
+    // Serial.println(((int)receiverString[i+j]-48));
+
+  }
+
+ char l=oct;
+ if(l=='~'){
+  if(startTrans==0){ 
+     startTrans=1;
+     decoded="";
+     count=0;
+     checksum=0;
+    }else{
+      
+     if(checksum==97){Serial.println(decoded);}
+     startTrans=0;
+     
+     
+    }
+ }else{
+   
+   
+   if(startTrans==1){
+     
+     count++;
+     checksum+=oct;
+     decoded+=l;
+  
+}
+ }
+ 
+ i+=10;
+
+ }
+  }
+  delay(1000);
+  }
+   
+   
+   
+   
+    
 void rtty_txstring (char * string)
 {
-
+ 
   /* Simple function to sent a char at a time to 
    	** rtty_txbyte function. 
    	** NB Each char is one byte (8 Bits)
    	*/
- 	//noInterrupts(); // We need accurate timing!
-
+ 
   char c;
  
   c = *string++;
  
   while ( c != '\0')
   {
-
     rtty_txbyte (c);
-
     c = *string++;
   }
-
-
-	//interrupts();
-
-
-
 }
  
  
@@ -173,7 +154,7 @@ void rtty_txbyte (char c)
  
   // Send bits for for char LSB first	
  
-  for (i=0;i<7;i++) // Change this here 7 or 8 for ASCII-7 / ASCII-8
+  for (i=0;i<8;i++) // Change this here 7 or 8 for ASCII-7 / ASCII-8
   {
     if (c & 1) rtty_txbit(1); 
  
@@ -185,13 +166,17 @@ void rtty_txbyte (char c)
  
   rtty_txbit (1); // Stop bit
   rtty_txbit (1); // Stop bit
-  
-  
-  
+ // Serial.println();
+
 }
  
 void rtty_txbit (int bit)
 {
+  //time2=micros();
+    //Serial.println(time2-time1);
+  // time1=micros();
+   //20384
+
   if (bit)
   {
     // high
@@ -203,10 +188,14 @@ void rtty_txbit (int bit)
     digitalWrite(RADIOPIN, LOW);
  
   }
-  //                  delayMicroseconds(3370); // 300 baud
-  delayMicroseconds(10000); // For 50 Baud uncomment this and the line below. 
-  delayMicroseconds(10150); // For some reason you can't do 20150 it just doesn't work.
-   //Serial.print(String(bit,DEC));
+Serial.print(bit);
 
+                   delayMicroseconds(3370); // 300 baud
+  //delayMicroseconds(10000); // For 50 Baud uncomment this and the line below. 
+ // delayMicroseconds(10150); // For some reason you can't do 20150 it just doesn't work.
+ //receiver+=digitalRead(2); // Puts the text in the datastring
 
 }
+
+   
+   

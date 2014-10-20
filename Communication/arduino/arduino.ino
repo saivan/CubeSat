@@ -187,7 +187,6 @@ void rtty_txbit (int bit)
     digitalWrite(RADIOPIN, LOW);
  
   }
-Serial.print(bit);
 
                    delayMicroseconds(3370); // 300 baud
   //delayMicroseconds(10000); // For 50 Baud uncomment this and the line below. 

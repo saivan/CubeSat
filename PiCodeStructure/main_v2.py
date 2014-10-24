@@ -14,6 +14,9 @@ addr = 0x04
 # Setup Serial for IMU via USB COM port
 #IMUSerial = serial.Serial(port='COM10',baudrate=57600, timeout=1)
 
+#Setup Serial for Pi to Uno
+#PiUnoSerial = serial.Serial("/dev/ttyACM0",9600)
+
 def getGPS():
     
     #Random string inputted for testing
@@ -57,31 +60,10 @@ def getIMU():
 
 def receiveFromUno():
     ## Receives byte by byte from Arduino, then appends this to string list
-    
-    byte=1
-    try:
-##        while byte != 0:
-##            byte=bus.read_byte(addr) 
-##            string.append(chr(byte))
-##        receivedData = ''.join(string)     #elements in string concatenated
-        receivedData = '2281,212,11'    
-        print receivedData
-        #bus.write_byte(addr, 0) #send 0 back to signify string has been sent
-        string = [] #Reinitialise string
-        #time.sleep(1)
-        return receivedData
-    except IOError:
-        print "error"
-        subprocess.call(['i2cdetect','-y','1'])
+    PiUnoSerial.read(15)
 
-def sendToUno(string):
-    try:
-    for i in range (0,len(string)):
-        bus.write_byte(addr,ord(string[i]))
-        print "sending"
-    bus.write_byte(addr,0) #send a 0 - effective as null terminator character
-    except IOError:
-        subprocess.call(['i2cdetect','-y','1'])
+def sendToUno():
+    PiUnoSerial.write(string)
 
 def IMUCombineSun(IMUAngles, sunSensorData):
     attitude[0] = (IMUAngles[0] + sunSensorData[0])/2

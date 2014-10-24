@@ -4,8 +4,8 @@
 image = open("image.bmp",'r')
 imageData = bytearray(image.read())
 
-sendBytes = range(50)
-for i in range(50):
+sendBytes = range(5000)
+for i in range(5000):
 	currentByte = imageData.pop()
 	# handling the conversions
 	if currentByte<94:

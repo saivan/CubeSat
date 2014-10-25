@@ -62,7 +62,7 @@ def receiveFromUno():
     ## Receives byte by byte from Arduino, then appends this to string list
     PiUnoSerial.read(15)
 
-def sendToUno():
+def sendToUno(string):
     PiUnoSerial.write(string)
 
 def IMUCombineSun(IMUAngles, sunSensorData):
@@ -71,13 +71,13 @@ def IMUCombineSun(IMUAngles, sunSensorData):
     attitude[2] = IMUAngles[2]
     return attitude
 
-def applyControl:
-    
+def applyControl():
+    print Applying Control
 
 while 1:
 ##    changeMode();
     
-    GPSData=getGPS()
+    gpsString=getGPS()
     timeSeconds = getGPSTimeSec()
     
 ##    
@@ -92,6 +92,6 @@ while 1:
 ##    attitude = IMUCombineSun(IMUAngles, sunSensorData)
 ##    applyControl()
 ##
-##    if (timeSeconds == 0 or timeSeconds == 30):
-##        sendToUno(GPSData)
+    if (timeSeconds == 0 or timeSeconds == 30):
+        sendToUno(gpsString)
     

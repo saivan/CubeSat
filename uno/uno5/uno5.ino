@@ -40,7 +40,7 @@ void loop()
   sunsensors = sunsensors();
   GammaRay = GammaRay();
   
-  sprintf(datastring,"ª¦²`bpª¦¨b<information><FCS>~");
+  sprintf(datastring,"~ª¦²`bpª¦¨b<information><FCS>~");
   rtty_txstring (datastring);
   Serial.println();
   

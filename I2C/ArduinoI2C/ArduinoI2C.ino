@@ -5,7 +5,7 @@
 #define SLAVE_ADDRESS 0x04
 int number = 0;
 int state = 0;
-int i=0;
+String piString="";
 char string[]="hello,e,gesgjesesgseg,e,sg,es,g"; //initialise string to send
 
 void setup() {
@@ -14,24 +14,26 @@ void setup() {
     Wire.begin(SLAVE_ADDRESS);
 
     // define callbacks for i2c communication
-    Wire.onReceive(receiveData);
-    
-    Wire.onRequest(sendData);
+
     
     Serial.println("Ready!");
 }
 
 void loop() {
-    delay(100);
+  
+   Wire.onReceive(receiveData);
+    Serial.println(piString);
+    //Wire.onRequest(sendData);
+  
+    delay(2000);
 }
 
 // callback for received data
 void receiveData(int byteCount){
-
+    piString="";
     while(Wire.available()) {
-        i = Wire.read();
-    }
-        
+        piString += Wire.read();
+    }        
 }
 
 // callback for sending data

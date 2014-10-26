@@ -1,0 +1,140 @@
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(10, 11); // RX, TX
+int no;
+int buf[64];
+int i=0;
+
+void setup()
+{
+  Serial.begin(9600);
+  Serial.println("Goodnight moon!");
+  mySerial.begin(4800);
+  //mySerial.println("Hello, world?");
+  for(int j=0;j<64;j++){buf[j]='\0';}
+}
+
+void loop() // run over and over
+{
+    int k;
+    int j=0;
+    int data;
+    if(Serial.available())
+    {
+        no=6;
+        for(k=0;k<no;k=k+1){mySerial.print("5");}   
+        no = Serial.available();
+        Serial.print("data transmitted is "); 
+        for(k=0;k<no;k=k+1)
+        {
+          data=Serial.read();
+          mySerial.print(data);
+          Serial.write(data);
+        }
+        Serial.println();
+         no=6;
+        for(k=0;k<no;k=k+1){ mySerial.print("a");}   
+    }
+    if(buf[0]!=53)
+    {
+       i=0;
+       for(j=0;j<64;j++){buf[j]='\0';}
+    }
+    while(mySerial.available()>0)
+    {
+        buf[i]=mySerial.read();
+        i=i+1;
+        //Serial.println(i);
+    }
+  while(buf[j]!='\0'){j=j+1;}
+  int length = j;
+  //Serial.print("--");
+  //Serial.println(j);
+  int real_len= length-12;
+  if(length > 14)
+  {
+    //Serial.write("cba");
+    if(buf[0]==72 && buf[1]==101)
+    {
+      for(j=0;j<64;j++){buf[j]='\0';}
+    }
+    if(buf[0]==53 && buf[1]==53 && buf[2]==53 && buf[3]==53 && buf[4]==53 && buf[5]==53 && buf[length-1]==97 && buf[length-2]==97 && buf[length-3]==97 && buf[length-4]==97 && buf[length-5]==97 && buf[length-6]==97)
+    {
+      //Serial.write("abc");
+       Serial.print("data received is "); 
+      for(j=0;j<real_len/2;j=j+1)
+      {
+        Serial.write((buf[6+j*2]-48)*10+buf[6+j*2+1]-48);
+      }
+      i=0;
+      for(j=0;j<64;j++){buf[j]='\0';}
+      Serial.println();
+    }
+  }
+  int sunsensors = sunsensors();
+  int GammaRay = GammaRay();
+}
+
+String sunsensors() 
+{
+  double theta0 = 60 * PI / 180;
+  double V0 = 4.99;
+  double C = 2 * V0 * sin(theta0);
+  
+  // read the input on analog pin 0:
+  int sensorValue1 = analogRead(A0);
+  int sensorValue2 = analogRead(A1);
+  int sensorValue3 = analogRead(A2);
+  int sensorValue4 = analogRead(A3);
+
+  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+  double voltage1 = sensorValue1 * (5.0 / 1023.0);
+  double voltage2 = sensorValue2 * (5.0 / 1023.0);
+  double voltage3 = sensorValue3 * (5.0 / 1023.0);
+  double voltage4 = sensorValue4 * (5.0 / 1023.0);
+  double angle1 = asin((voltage1 - voltage2) / C) * 180 / PI;
+  double angle2 = asin((voltage3 - voltage4) / C) * 180 / PI;
+  
+  // Sun location is with respect to face 1.
+  double n1 = 1;
+  int yaw = (tan(angle1) / tan(angle2)) * 180 / PI;    //n2
+  int pitch = tan(angle1) * 180 / PI;    //t
+  
+  String yaw = String(yaw, DEC);
+  String pitch = String(pitch, DEC);
+  String sunsensors = String(yaw +","+ pitch);
+  // print out the value you read:
+  //Serial.print("sensor1 = " );
+  //Serial.println(voltage1);
+  //Serial.print("sensor2 = " );
+  //Serial.println(voltage2);
+  //Serial.print("sensor3 = " );
+  //Serial.println(voltage3);
+  //Serial.print("sensor4 = " );
+  //Serial.println(voltage4);
+  
+  //Serial.println("angle1 = ");
+  ///Serial.println(angle1);
+  //Serial.println("angle2 = ");
+  //Serial.println(angle2);
+  
+  Serial.print("yaw = ");
+  Serial.println(yaw);
+  Serial.print("pitch = ");
+  Serial.println(pitch);
+  Serial.print("sunsensors = ")
+  Serial.println(sunsensors);
+  
+  return sunsensors
+}
+
+double GammaRay() {
+  // put your main code here, to run repeatedly:
+  int rawVal = analogRead(A5);
+  double val = raw * (5.0 / 1023);
+  
+  Serial.print("val = ");
+  Serial.println(Val);
+  
+  return val;
+}

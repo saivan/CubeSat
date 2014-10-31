@@ -105,4 +105,8 @@ while 1:
         if (timeSeconds == 0 or timeSeconds == 30):
             sendToUno(GPSData) 
 
-    
+    if modeCommand == 3:
+       print "Normal Mode"
+       
+    if modeCommand == 4:
+        print "Transmit Mode"

@@ -5,7 +5,7 @@ import serial
 import string
 
 # Input your COM port and baud rate
-ser = serial.Serial(port='COM10',baudrate=57600, timeout=1)
+ser = serial.Serial(port='ttyUSB0',baudrate=57600, timeout=1)
 
 #While loop to constantly read from serial
 while 1:

@@ -1,0 +1,46 @@
+
+import serial
+
+IMU = serial.Serial('/dev/ttyUSB0',57600)
+
+# Define the parts of the IMU Data
+orient = roll,pitch,yaw = 0, 1, 2
+buffSize = 60
+rawYaw = range(buffSize)
+driftYaw = 0 								# The current drift value from the low pass filter
+currentYaw = range(buffSize)						# The actual value of the yaw from the high pass filter
+i = 0									# i is the buffer index
+totalDrift 
+# Define a function to increment and decrement the index
+def ind( current, jump ):
+	current = current+jump
+	if current < 0:
+		current += buffSize
+	elif current >= buffSize:
+		current -= buffSize
+	return current
+
+
+# Give the IMU some time to wake up
+for count in range(50): 						# Throw away 50 readings
+	currentReading = IMU.readline()
+
+while 1:
+	# Get and clean a reading
+	currentReading = IMU.readline()
+	currentReading = currentReading.strip("RPY#\r\n")		# Strip away the characters we don't need
+	orientationString = (currentReading.split(','))			# Split up the roll pitch and yaw of the reading
+	# Calculate the low frequency drift
+	deltaDrift = -driftYaw						# Store the old drift Value before calculating the next one 
+	driftYaw += rawYaw[i]/buffSize					# Get The old value in this buffer position
+	rawYaw[i] = float( orientationString[roll] )			# Since we are using only the yaw, we convert it to a float and store it
+	driftYaw -= rawYaw[i]/buffSize					# Subtract the new value in this buffer position
+	deltaDrift += driftYaw
+	# Remove the low frequency drift by adding the difference introduced by the drift
+	currentYaw[i] = rawYaw[i] + driftYaw
+	# Subtract off the low frequency drift to get the actual signal with a calibration value
+	
+	# Increment the pointer for the next itteration
+	i = ind( i, 1 )							# Increment the buffer pointer#
+	#print "raw: " + str(rawYaw[i]) + " yaw: " + str(currentYaw[i]) +" totalDrift: " + str(deltaDrift)
+	print str(driftYaw) + '\t' + str(rawYaw[i]) + ' ' + str(currentYaw[i]) + '\n' 

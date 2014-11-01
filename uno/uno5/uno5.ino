@@ -1,4 +1,4 @@
-//slave uno
+//Uno code + sunsensors and multiplexing code
 
 #include <Wire.h>
 #include <string.h>

@@ -3,9 +3,22 @@
 #include <Wire.h>
 #include <string.h>
 #include <util/crc16.h>
+#include "SunSensor.h"
+#include "Arduino.h"
 
 #define RADIOPIN 7
 #define RECEIVEPIN 12
+#define NUM_SUN_SENSORS 10  // number of sun sensors
+#define S1 2
+#define S2 3
+#define S3 4
+#define S4 5
+#define E 6
+
+int data[NUM_SUN_SENSORS];  // array to store sun sensor conversion data
+int pinout[] = {S1, S2, S3, S4, E, A0}; 
+
+SunSensor ss(pinout, NUM_SUN_SENSORS);
 
 String sunsensors;
 String decoded;
@@ -33,6 +46,11 @@ void setup()
   
   pinMode(RECEIVERPIN, INPUT);  
   pinMode(RADIOPIN,OUTPUT);
+  
+  for (int i = 0; i < NUM_SUN_SENSORS; i++)
+  {
+    data[i] = 0;
+  }
 }
 
 void loop()
@@ -74,21 +92,23 @@ void receiveEvent(int howMany)
 
 String sunsensors() 
 {
+  ss.getSSData(data);
+
   double theta0 = 60 * PI / 180;
   double V0 = 4.99;
   double C = 2 * V0 * sin(theta0);
   
   // read the input on analog pin 0:
-  int sensorValue1 = analogRead(A0);
-  int sensorValue2 = analogRead(A1);
-  int sensorValue3 = analogRead(A2);
-  int sensorValue4 = analogRead(A3);
+//  int sensorValue1 = analogRead(A0);
+//  int sensorValue2 = analogRead(A1);
+//  int sensorValue3 = analogRead(A2);
+//  int sensorValue4 = analogRead(A3);
 
   // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
-  double voltage1 = sensorValue1 * (5.0 / 1023.0);
-  double voltage2 = sensorValue2 * (5.0 / 1023.0);
-  double voltage3 = sensorValue3 * (5.0 / 1023.0);
-  double voltage4 = sensorValue4 * (5.0 / 1023.0);
+  double voltage1 = data[0] * (5.0 / 1023.0);
+  double voltage2 = data[1] * (5.0 / 1023.0);
+  double voltage3 = data[2] * (5.0 / 1023.0);
+  double voltage4 = data[3] * (5.0 / 1023.0);
   double angle1 = asin((voltage1 - voltage2) / C) * 180 / PI;
   double angle2 = asin((voltage3 - voltage4) / C) * 180 / PI;
   
